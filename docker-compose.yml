@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  taiga:
+    build: .
+    ports: 
+        - 8080:80
+    env_file:
+        - sample.env
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    links:
+      - postgres
+      - rabbitmq
+      - redis
+    volumes:
+      - ./volumes/media/:/data/media
+  redis:
+    image: redis:alpine
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=taiga
+      - POSTGRES_USER=taiga
+      - POSTGRES_PASSWORD=taiga_pw
+    volumes:
+      - ./volumes/pg_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    environment:
+      - RABBITMQ_DEFAULT_VHOST=taiga
+      - RABBITMQ_DEFAULT_USER=taiga
+      - RABBITMQ_DEFAULT_PASS=taiga_pw
