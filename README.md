@@ -5,7 +5,6 @@ Some parts might be inspired by the original repositories of benhutchins
 (https://github.com/benhutchins/docker-taiga) and the fork of benyanke 
 (https://github.com/benyanke/docker-taiga).
 
-
 ## Features
 
 - All in one taiga container: taiga-front, taiga-back and taiga-events (no external services 
@@ -26,6 +25,12 @@ and inject certificates to directly expose the container
 
 
 ## Docker configuration
+
+### Docker hub
+
+The image is available on docker hub: https://hub.docker.com/r/taiq/docker-taiga
+
+Use `docker pull taiq/docker-taiga` to pull the image.
 
 ### Environment settings
 
