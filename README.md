@@ -45,7 +45,7 @@ https and wss for tls)
 
 ### Volumes
 
-Bind the directory `/data/media` to a volume to not lose your data when redeploying the container.
+Bind the directory `/data` to a volume to not lose your data when redeploying the container.
 The directory will contain all files created by taiga, like attachments.
 
 

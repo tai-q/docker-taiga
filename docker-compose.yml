@@ -16,7 +16,7 @@ services:
       - rabbitmq
       - redis
     volumes:
-      - ./volumes/media/:/data/media
+      - ./volumes/taiga/:/data/
   redis:
     image: redis:alpine
   postgres:
