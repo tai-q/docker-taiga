@@ -1,7 +1,7 @@
 FROM python:3.6
 
 EXPOSE 80
-VOLUME /data/media
+VOLUME /data
 HEALTHCHECK CMD curl http://127.0.0.1/conf.json && curl http://127.0.0.1/api/v1/ || exit 1
 
 ENV TAIGA_BACK_VERSION 4.2.5
