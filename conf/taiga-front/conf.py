@@ -7,6 +7,10 @@ def getenv_boolean(name: str) -> bool:
 def getenv_or_none(name: str) -> str:
     return os.getenv(name) if (name in os.environ and os.getenv(name) != '') else None
 
+def getenv_list(name: str, default: str) -> list:
+    result = getenv_or_none(name)
+    return result.split(",") if result else default
+
 config = dict({
     'api': os.getenv('FRONT_API_URL', 'https://localhost/api/v1/'),
     'eventsUrl': getenv_or_none('FRONT_EVENTS_URL'),
@@ -16,8 +20,8 @@ config = dict({
     'debug': getenv_boolean('DEBUG'),
     'debugInfo': False,
     'defaultLanguage': os.getenv('FRONT_DEFAULT_LANGUAGE', 'en'),
-    'themes': ('taiga',),
-    'defaultTheme': 'taiga',
+    'themes': getenv_list('FRONT_THEMES', ('taiga', 'taiga-fresh', 'material-design', 'high-contrast')),
+    'defaultTheme': os.getenv('FRONT_DEFAULT_THEME', 'taiga'),
     'publicRegisterEnabled': getenv_boolean('PUBLIC_REGISTER_ENABLED'),
     'feedbackEnabled': getenv_or_none('FEEDBACK_ENABLED'),
     'supportUrl': getenv_or_none('FRONT_SUPPORT_URL'),
