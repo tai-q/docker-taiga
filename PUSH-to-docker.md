@@ -9,8 +9,8 @@ docker build . \
 -t taiq/docker-taiga:latest \
 -t taiq/docker-taiga:4 \
 -t taiq/docker-taiga:4.2 \
--t taiq/docker-taiga:4.2.12 \
--t taiq/docker-taiga:4.2.12_1
+-t taiq/docker-taiga:4.2.13 \
+-t taiq/docker-taiga:4.2.13_1
 
 docker push taiq/docker-taiga
 ```
