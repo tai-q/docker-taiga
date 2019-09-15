@@ -54,3 +54,12 @@ The directory will contain all files created by taiga, like attachments.
 This is a community build and is not associated with Taiga.io. Only the files in this repository 
 are subject to the repository license file (LICENSE) and not the built container. All packages of taiga 
 (e.g. taiga-back) are subject of their respective licenses.
+
+## Breaking/Important changes
+
+### 4.2.13_3
+
+- Uses python alpine as basis instead of buster-slim. Any related docker images will need to adjust their behavior.
+- SECRET_KEY2 removed due to a misconception. SECRET_KEY2 was used for taiga-events which needs to be the same as SECRET_KEY from django. This is now corrected as there is only SECRET_KEY in use for both files now. If you used different keys taiga-events was not working and did not print any error messages.
+- Fixed celery for async events. Due to another misconception the default configuration of taiga for celery was not loaded. This resultet in at least a broken async project export feature.
+ 
