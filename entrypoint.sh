@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 vergt() {
     [ "$1" = "$2" ] && return 1 || [  "$2" = "`echo -e "$1\n$2" | sort -V | tail -n1`" ]
@@ -31,11 +31,11 @@ python /app/conf/taiga-front/conf.py > /app/taiga-front-dist/dist/conf.json
 
 cp /app/conf/supervisor/supervisor.conf /etc/supervisord.conf
 
-if [ "${CELERY_ENABLED,,}" = "true" ]; then
+if [ `echo $CELERY_ENABLED | tr [:upper:] [:lower:]` = "true" ]; then
     cat /app/conf/supervisor/supervisor-async.conf >> /etc/supervisord.conf
 fi
 
-if [ "${EVENTS_ENABLED,,}" = "true" ]; then
+if [ `echo $EVENTS_ENABLED | tr [:upper:] [:lower:]` = "true" ]; then
     cat /app/conf/supervisor/supervisor-events.conf >> /etc/supervisord.conf
 fi
 

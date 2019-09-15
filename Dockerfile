@@ -1,4 +1,4 @@
-FROM python:3.6-slim-buster
+FROM python:3.6-alpine
 
 EXPOSE 80
 VOLUME /data
@@ -14,32 +14,44 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /app
 
 RUN set -x \
-    && apt-get update && apt-get -y --no-install-recommends install curl \
-    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && apk update \
+    && apk add \
         nginx \
         git \
         nodejs \
+        npm \
         gettext \
+        gcc \
+        libpq\
+        libjpeg \
+        libxslt \
+        musl-dev \
+        libffi-dev \
+        postgresql-dev \
+        libxslt-dev \
+        zlib-dev \
+        jpeg-dev \
+    && mkdir /run/nginx/ \
+    && touch /run/nginx/nginx.pid \
     && pip install --no-cache-dir supervisor \
     && git clone https://github.com/taigaio/taiga-front-dist -b ${TAIGA_FRONT_VERSION} \
     && git clone https://github.com/taigaio/taiga-back -b ${TAIGA_BACK_VERSION} \
     && git clone https://github.com/taigaio/taiga-events \
     && cd taiga-events && git reset --hard ${TAIGA_EVENTS_VERSION} && cd ../ \
     && rm -rf ./*/.git \
-    && rm -rf /var/lib/apt/lists/ \
+    && rm -rf /var/cache/apk/* \
     && pip install --no-cache-dir -r taiga-back/requirements.txt \
     && pip install --no-cache-dir taiga-contrib-ldap-auth-ext==${TAIGA_LDAP_VERSION} \
     && cd taiga-back && python manage.py compilemessages && cd ../ \
     && cd taiga-back && python manage.py collectstatic --noinput && cd ../ \
     && cd taiga-events && npm install -y && cd ../ \
-    && apt-get purge git curl -y
+    && apk del git npm gettext gcc musl-dev libffi-dev postgresql-dev libxslt-dev zlib-dev jpeg-dev
 
 COPY conf/ /app/conf/
 COPY entrypoint.sh /app/
 
-RUN ln -sf /app/conf/nginx/taiga.conf /etc/nginx/sites-enabled/default \
+RUN set -x \
+    && ln -sf /app/conf/nginx/taiga.conf /etc/nginx/conf.d/default.conf \
     && ln -sf /app/conf/taiga-back/local.py /app/taiga-back/settings/local.py \
     && ln -sf /app/conf/taiga-back/env-settings.py /app/taiga-back/settings/env.py \
     && ln -sf /app/conf/taiga-back/celery_local.py /app/taiga-back/settings/celery_local.py \
