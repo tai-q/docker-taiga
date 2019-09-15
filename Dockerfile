@@ -14,6 +14,8 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /app
 
 RUN set -x \
+    && addgroup -S -g 105 app \
+    && adduser -h /app -S -D -H -u 105 app app \
     && apk update \
     && apk add \
         nginx \

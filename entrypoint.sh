@@ -24,6 +24,12 @@ else
     fi
 fi
 
+# Migration to non root execution 
+if [ `stat -c %u /data/media` != 105 ]; then
+    echo "Media directory has wrong ownership. Changing to app user."
+    chown app:app -R /data/media
+fi
+
 cd /app
 
 python /app/conf/taiga-events/conf.py > /app/taiga-events/conf.json
